@@ -11,6 +11,8 @@ module SolidusSquare
 
     engine_name 'solidus_square'
 
+    config.eager_load_paths << root.join('app', 'models')
+
     initializer "solidus_square.add_static_preference", after: "spree.register.payment_methods" do |app|
       app.config.to_prepare do
         app.config.spree.payment_methods << SolidusSquare::PaymentMethod
