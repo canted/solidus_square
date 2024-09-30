@@ -12,7 +12,9 @@ module SolidusSquare
     engine_name 'solidus_square'
 
     initializer "solidus_square.add_static_preference", after: "spree.register.payment_methods" do |app|
-      app.config.spree.payment_methods << SolidusSquare::PaymentMethod
+      app.config.to_prepare do
+        app.config.spree.payment_methods << SolidusSquare::PaymentMethod
+      end
       Spree::PermittedAttributes.source_attributes.concat [:nonce]
     end
 
