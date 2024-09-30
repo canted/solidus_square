@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SolidusSquare
-  class PaymentMethod < SolidusSupport.payment_method_parent_class
+  class PaymentMethod < Spree::PaymentMethod
     preference :access_token, :string
     preference :environment, :string
     preference :location_id, :string
