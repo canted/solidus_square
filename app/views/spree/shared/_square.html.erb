@@ -1,14 +1,24 @@
- <%= render partial: 'solidus_square/square_javascript'%>
+<%= render partial: 'solidus_square/square_javascript'%>
 
-<div id="card-container"></div>
-<button id="square-card-button" type="button">Pay</button>
-
+<div id="card-container">
+  <div class="placeholder-group mb-4">
+    <p class="placeholder-glow">
+      <span class="placeholder col-6"></span>
+      <span class="placeholder col-2"></span>
+      <span class="placeholder col-2"></span>
+    </p>
+    <p class="placeholder-glow">
+      <span class="placeholder col-10"></span>
+    </p>
+  </div>
+</div>
+<button id="square-card-button" type="button" class="btn btn-success"><%= I18n.t("spree.save_and_continue") %></button>
 <div id="payment-status-container"></div>
 
 <div
   id="square-checkout-payload"
-  data-location-id="<%= payment_method.preferred_location_id %>"
-  data-app-id="<%= payment_method.preferred_app_id %>"
+  data-location-id="<%= ENV['SQUARE_LOCATION_ID'] %>"
+  data-app-id="<%= ENV['SQUARE_APP_ID'] %>"
   data-order-number="<%= @order.number %>"
   data-order-token="<%= @order.guest_token %>"
   data-order-total="<%= @order.total.to_f %>"
