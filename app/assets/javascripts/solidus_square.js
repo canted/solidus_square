@@ -4,7 +4,9 @@ let orderNumber;
 let orderToken;
 let frontend;
 
-document.addEventListener('DOMContentLoaded', async function () {
+const doCheckoutPayload = () => {
+  if (!document.getElementById('square-checkout-payload')) { return }
+  console.log('doCheckoutPayload');
   const checkoutPayload = document.getElementById(
     'square-checkout-payload'
   );
@@ -16,8 +18,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     orderTotal = checkoutPayload.dataset.orderTotal;
     advanceCheckoutUrl = checkoutPayload.dataset.advanceCheckoutUrl;
     frontend = checkoutPayload.dataset.frontend == "true" ? true : false;
+
+    loadSquarePayment();
   }
-})
+};
+
+window.addEventListener('DOMContentLoaded', doCheckoutPayload);
+window.addEventListener('htmx:afterSwap', doCheckoutPayload);
 
 async function advanceOrder(){
   await fetch(advanceCheckoutUrl, {
@@ -65,6 +72,8 @@ async function createSolidusPayment(token){
 async function initializeCard(payments) {
   const card = await payments.card();
   await card.attach('#card-container');
+  document.querySelector('#card-container .placeholder-group').style.display = 'none';
+
   return card;
 }
 // Call this function to send a payment token, buyer name, and other details
@@ -76,7 +85,7 @@ async function createPayment(token) {
   if (paymentResponse.ok) {
     document.getElementById("card-container").remove()
     document.getElementById("square-card-button").remove()
-    paymentStatusDiv.innerHTML = "Payment Successfully"
+    paymentStatusDiv.innerHTML = "Payment Approved"
     await advanceOrder()
 
     if (frontend) {
@@ -130,10 +139,9 @@ function displayPaymentResults(status) {
   statusContainer.style.visibility = 'visible';
 }
 
-document.addEventListener('DOMContentLoaded', async function () {
-  if (!window.Square) {
-    return;
-  }
+const loadSquarePayment = async function () {
+  if (!document.getElementById('square-checkout-payload')) { return; } 
+  if (!window.Square) { return; }
   const payments = window.Square.payments(appId, locationId);
   let card;
   try {
@@ -167,7 +175,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     'square-card-button'
   );
   cardButton.addEventListener('click', async function (event) {
-
     await handlePaymentMethodSubmission(event, card);
   });
-});
+};
+
+
+// window.addEventListener('DOMContentLoaded', loadSquarePayment);
+// window.addEventListener('htmx:afterSwap', loadSquarePayment);
