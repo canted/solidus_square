@@ -4,9 +4,9 @@ module SolidusSquare
   module CheckoutHelper
     def solidus_square_gateway
       SolidusSquare::Gateway.new(
-        access_token: SolidusSquare.config.square_access_token,
-        environment: SolidusSquare.config.square_environment,
-        location_id: SolidusSquare.config.square_location_id
+        access_token: ENV['SQUARE_ACCESS_TOKEN'],
+        environment: ENV['SQUARE_ENVIRONMENT'],
+        location_id: ENV['SQUARE_LOCATION_ID'],
       )
     end
   end
