@@ -3,7 +3,7 @@
 module SolidusSquare
   class PaymentMethod < Spree::PaymentMethod
     preference :access_token, :string
-    preference :environment, :string
+    preference :environment, :string, default: 'sandbox'
     preference :location_id, :string
     preference :app_id, :string
     preference :redirect_url, :string
@@ -32,6 +32,14 @@ module SolidusSquare
       return false unless payment.source.can_void?(payment)
 
       gateway.void(payment.response_code, originator: payment)
+    end
+
+    def options
+      {
+        access_token: ENV['SQUARE_ACCESS_TOKEN'], # preferred_access_token,
+        environment: ENV['SQUARE_ENVIRONMENT'], # preferred_environment&.to_sym,
+        location_id: ENV['SQUARE_LOCATION_ID'], # preferred_location_id
+      }
     end
   end
 end
