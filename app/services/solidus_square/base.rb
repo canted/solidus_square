@@ -2,14 +2,15 @@
 
 module SolidusSquare
   class Base
-    def initialize(*args); end
+    def initialize(*args, **kwargs)
+    end
 
     def call
       raise NotImplementedError
     end
 
-    def self.call(*args)
-      new(*args).call
+    def self.call(*args, **kwargs)
+      new(*args, **kwargs).call
     end
 
     private
