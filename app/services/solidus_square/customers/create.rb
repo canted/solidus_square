@@ -23,13 +23,13 @@ module SolidusSquare
       end
 
       def create_customer
-        handle_square_result(client.customers.create_customer(construct_customer)) do |result|
+        handle_square_result(client.customers.create_customer(body: construct_customer)) do |result|
           result.data&.customer
         end
       end
 
       def search_customer
-        handle_square_result(client.customers.search_customers(construct_search_query)) do |result|
+        handle_square_result(client.customers.search_customers(body: construct_search_query)) do |result|
           result.data&.customers&.first
         end
       end
