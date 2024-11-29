@@ -8,9 +8,10 @@ module SolidusSquare
 
     def initialize(options)
       @location_id = options[:location_id]
+      env = options[:environment]&.to_sym || :sandbox
       @client = ::Square::Client.new(
         access_token: options[:access_token],
-        environment: options[:environment]
+        environment: env
       )
     end
 
